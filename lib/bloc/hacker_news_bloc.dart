@@ -7,17 +7,18 @@ import 'package:flutter_hacker_news_app/repository/hacker_news_repository.dart';
 import 'base_bloc.dart';
 
 class HackerNewsBloc extends Bloc {
-  static const int INIT_PAGE_SIZE = 10;
+  static const int INIT_PAGE_SIZE = 20;
   static const int PAGE_SIZE = 3;
 
-  final _topStoryIds = List<int>();
-  final _topStories = List<Story>();
+  final _topStoryIds = <int>[];
+  final _topStories = <Story>[];
   final _repository = HackerNewsRepository();
 
   var _isLoadingMoreTopStories = false;
   var _currentStoryIndex = 0;
 
-  StreamController<List<Story>> _topStoriesStreamController = StreamController();
+  StreamController<List<Story>> _topStoriesStreamController =
+      StreamController();
 
   Stream<List<Story>> get topStories => _topStoriesStreamController.stream;
 

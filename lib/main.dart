@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Provider<HackerNewsBloc>(
-        builder: (context) => HackerNewsBloc(),
+        create: (context) => HackerNewsBloc(),
         dispose: (context, bloc) => bloc.dispose(),
         child: HackerNewsPage(),
       ),
