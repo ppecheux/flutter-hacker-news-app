@@ -24,7 +24,7 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  UserBloc _bloc;
+  late UserBloc _bloc;
   String _userId;
   _UserPageState(this._userId);
 
@@ -48,7 +48,7 @@ class _UserPageState extends State<UserPage> {
         stream: _bloc.user,
         builder:
             (BuildContext context, AsyncSnapshot<HackerNewsUser> snapshot) {
-          if (snapshot.hasData) return _buildUserProfile(user: snapshot.data);
+          if (snapshot.hasData) return _buildUserProfile(user: snapshot.data!);
           if (snapshot.hasError)
             return Center(child: Text('${snapshot.error}'));
           return Center(child: CircularProgressIndicator());
@@ -57,11 +57,11 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Widget _buildUserProfile({HackerNewsUser user}) {
+  Widget _buildUserProfile({required HackerNewsUser user}) {
     return Card(
       child: ListTile(
         title: Text(user.id),
-        subtitle: (user.about != null) ? Text(user.about) : Text(''),
+        subtitle: Text(user.about ?? ''),
         trailing: Text(user.karma.toString()),
       ),
     );

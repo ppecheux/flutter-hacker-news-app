@@ -22,7 +22,7 @@ class HackerNewsPage extends StatefulWidget {
 }
 
 class _HackerNewsPageState extends State<HackerNewsPage> {
-  HackerNewsBloc _bloc;
+  late HackerNewsBloc _bloc;
 
   final _scrollController = ScrollController();
 
@@ -52,7 +52,7 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
         stream: _bloc.topStories,
         builder: (BuildContext context, AsyncSnapshot<List<Story>> snapshot) {
           if (snapshot.hasData)
-            return _buildTopStories(topStories: snapshot.data);
+            return _buildTopStories(topStories: snapshot.data!);
           if (snapshot.hasError)
             return Center(child: Text('${snapshot.error}'));
           return Center(child: CircularProgressIndicator());
@@ -71,7 +71,7 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
     }
   }
 
-  Widget _buildTopStories({List<Story> topStories}) {
+  Widget _buildTopStories({required List<Story> topStories}) {
     return ListView.builder(
       controller: _scrollController,
       itemCount:
@@ -88,21 +88,21 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
     );
   }
 
-  Widget _buildStoryCardView({Story story}) {
+  Widget _buildStoryCardView({required Story story}) {
     return Card(
       child: ListTile(
-        title: Text(story.title),
+        title: Text(story.title!),
         subtitle: TextButton(
-          child: Text(story.author),
+          child: Text(story.author!),
           onPressed: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserView(story.author)));
+                    builder: (context) => UserView(story.author!)));
           },
         ),
         trailing: Text(story.score.toString()),
-        onTap: () => _launchUrl(story.url),
+        onTap: () => (story.url != null) ? _launchUrl(story.url!) : null,
       ),
     );
   }

@@ -28,7 +28,7 @@ class HackerNewsBloc extends Bloc {
     try {
       _topStoryIds.addAll(await _repository.loadTopStoryIds());
     } catch (e) {
-      _topStoriesStreamController.sink.addError('Unknown Error');
+      _topStoriesStreamController.sink.addError('Unknown Error $e');
       return;
     }
 

@@ -1,18 +1,18 @@
 class Story {
-  int score;
-  String author;
-  int id;
-  int time;
-  String title;
-  String type;
-  int descendants;
-  String url;
-  List<int> kids;
+  int? score;
+  String? author;
+  late final int id;
+  int? time;
+  String? title;
+  String? type;
+  int? descendants;
+  String? url;
+  List<int>? kids;
 
   Story({
     this.score,
     this.author,
-    this.id,
+    required this.id,
     this.time,
     this.title,
     this.type,

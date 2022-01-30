@@ -1,11 +1,16 @@
 class HackerNewsUser {
-  String id;
-  int created;
-  int karma;
-  String about;
-  List<int> submitted;
+  late final String id;
+  late final int created;
+  late int karma;
+  String? about;
+  List<int>? submitted;
 
-  HackerNewsUser({this.id, this.created, this.karma, this.about});
+  HackerNewsUser(
+      {required this.id,
+      required this.created,
+      required this.karma,
+      this.about,
+      this.submitted});
 
   HackerNewsUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];

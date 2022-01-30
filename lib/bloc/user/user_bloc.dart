@@ -6,13 +6,13 @@ import 'package:flutter_hacker_news_app/repository/hacker_news_repository.dart';
 import '../base_bloc.dart';
 
 class UserBloc extends Bloc {
-  HackerNewsUser _user;
+  late HackerNewsUser _user;
   final _repository = HackerNewsRepository();
   var _isLoadingUser = false;
   StreamController<HackerNewsUser> _userStreamController = StreamController();
   Stream<HackerNewsUser> get user => _userStreamController.stream;
 
-  void loadUser({String id}) async {
+  void loadUser({required String id}) async {
     if (_isLoadingUser) return;
     _isLoadingUser = true;
     try {
