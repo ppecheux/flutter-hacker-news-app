@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hacker_news_app/bloc/hacker_news_bloc.dart';
 import 'package:flutter_hacker_news_app/datamodel/story.dart';
-import 'package:flutter_hacker_news_app/page/user_page.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -93,14 +93,10 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
       child: ListTile(
         title: Text(story.title!),
         subtitle: TextButton(
-          child: Text(story.author!),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserView(story.author!)));
-          },
-        ),
+            child: Text(story.author!),
+            onPressed: () {
+              GoRouter.of(context).push('/user/${story.author}');
+            }),
         trailing: Text(story.score.toString()),
         onTap: () => (story.url != null) ? _launchUrl(story.url!) : null,
       ),
