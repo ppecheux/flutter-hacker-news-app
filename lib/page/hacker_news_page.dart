@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hacker_news_app/bloc/hacker_news_bloc.dart';
 import 'package:flutter_hacker_news_app/datamodel/story.dart';
+import 'package:flutter_hacker_news_app/page/user_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+class HackerNewsView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Provider<HackerNewsBloc>(
+      create: (context) => HackerNewsBloc(),
+      dispose: (context, bloc) => bloc.dispose(),
+      child: HackerNewsPage(),
+    );
+  }
+}
 
 class HackerNewsPage extends StatefulWidget {
   @override
@@ -39,8 +51,10 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
       body: StreamBuilder(
         stream: _bloc.topStories,
         builder: (BuildContext context, AsyncSnapshot<List<Story>> snapshot) {
-          if (snapshot.hasData) return _buildTopStories(topStories: snapshot.data);
-          if (snapshot.hasError) return Center(child: Text('${snapshot.error}'));
+          if (snapshot.hasData)
+            return _buildTopStories(topStories: snapshot.data);
+          if (snapshot.hasError)
+            return Center(child: Text('${snapshot.error}'));
           return Center(child: CircularProgressIndicator());
         },
       ),
@@ -48,7 +62,8 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
   }
 
   void _loadMoreTopStoriesIfNeed() {
-    final offsetToEnd = _scrollController.position.maxScrollExtent - _scrollController.position.pixels;
+    final offsetToEnd = _scrollController.position.maxScrollExtent -
+        _scrollController.position.pixels;
     final threshold = MediaQuery.of(context).size.height / 3;
     final shouldLoadMore = offsetToEnd < threshold;
     if (shouldLoadMore) {
@@ -59,7 +74,8 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
   Widget _buildTopStories({List<Story> topStories}) {
     return ListView.builder(
       controller: _scrollController,
-      itemCount: _bloc.hasMoreStories() ? topStories.length + 1 : topStories.length,
+      itemCount:
+          _bloc.hasMoreStories() ? topStories.length + 1 : topStories.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == topStories.length) {
           return Padding(
@@ -76,7 +92,15 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
     return Card(
       child: ListTile(
         title: Text(story.title),
-        subtitle: Text(story.author),
+        subtitle: TextButton(
+          child: Text(story.author),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserView(story.author)));
+          },
+        ),
         trailing: Text(story.score.toString()),
         onTap: () => _launchUrl(story.url),
       ),

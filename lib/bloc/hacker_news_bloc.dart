@@ -19,9 +19,7 @@ class HackerNewsBloc extends Bloc {
 
   StreamController<List<Story>> _topStoriesStreamController =
       StreamController();
-
   Stream<List<Story>> get topStories => _topStoriesStreamController.stream;
-
   HackerNewsBloc() {
     _loadInitTopStories();
   }
