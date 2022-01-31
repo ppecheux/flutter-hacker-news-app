@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'loading_widgets.dart';
+
 class HackerNewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
             return _buildTopStories(topStories: snapshot.data!);
           if (snapshot.hasError)
             return Center(child: Text('${snapshot.error}'));
-          return Center(child: CircularProgressIndicator());
+          return ListView(children: [LoadingCard(), LoadingCard()]);
         },
       ),
     );
@@ -78,10 +80,7 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
           _bloc.hasMoreStories() ? topStories.length + 1 : topStories.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == topStories.length) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return LoadingCard();
         }
         return _buildStoryCardView(story: topStories[index]);
       },
@@ -92,11 +91,13 @@ class _HackerNewsPageState extends State<HackerNewsPage> {
     return Card(
       child: ListTile(
         title: Text(story.title!),
-        subtitle: TextButton(
-            child: Text(story.author!),
-            onPressed: () {
-              GoRouter.of(context).push('/user/${story.author}');
-            }),
+        subtitle: story.author != null
+            ? TextButton(
+                child: Text(story.author!),
+                onPressed: () {
+                  GoRouter.of(context).push('/user/${story.author}');
+                })
+            : null,
         trailing: Text(story.score.toString()),
         onTap: () => (story.url != null) ? _launchUrl(story.url!) : null,
       ),

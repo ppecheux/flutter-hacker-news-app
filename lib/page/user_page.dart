@@ -3,6 +3,8 @@ import 'package:flutter_hacker_news_app/bloc/user/user_bloc.dart';
 import 'package:flutter_hacker_news_app/datamodel/HackerNewsUser.dart';
 import 'package:provider/provider.dart';
 
+import 'loading_widgets.dart';
+
 class UserView extends StatelessWidget {
   UserView(this.userId);
   final String userId;
@@ -51,7 +53,7 @@ class _UserPageState extends State<UserPage> {
           if (snapshot.hasData) return _buildUserProfile(user: snapshot.data!);
           if (snapshot.hasError)
             return Center(child: Text('${snapshot.error}'));
-          return Center(child: CircularProgressIndicator());
+          return LoadingCard();
         },
       ),
     );
